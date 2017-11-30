@@ -1,8 +1,9 @@
 const express = require('express')
 const path = require('path')
-const PORT = process.env.PORT || 5000
 const request = require('request');
 const unesc = require('unescape');
+
+const PORT = process.env.PORT || 5000
 
 let ddg_q1 = (qs, hd, dbg, callback) => {
   let rrg = /<a class="result__snippet" .+?>(.+?)<\/a>/g;
@@ -10,7 +11,7 @@ let ddg_q1 = (qs, hd, dbg, callback) => {
   request(
     {
       'url': 'https://duckduckgo.com/html?q=' + encodeURIComponent(qs),
-      'headers': headers
+      'headers': headers // hope it will help to not get banned by DDG =)
     },
     (error, response, body) => {
       let result = {}
