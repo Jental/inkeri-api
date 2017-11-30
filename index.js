@@ -14,8 +14,8 @@ let ddg_q1 = (qs, callback) => {
       callback({'response': plaintext});
     } else
       console.log("DDG returned nothing...");
-      console.log(body.substring(0,512));
-      callback({});
+      console.log(body.substring(0,256));
+      callback({'ddg_body': body});
   });
 }
 
