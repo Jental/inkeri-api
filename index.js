@@ -13,6 +13,8 @@ let ddg_q1 = (qs, callback) => {
       let plaintext = unesc(text.replace(/<b>(.*?)<\/b>/g, '$1'));
       callback({'response': plaintext});
     } else
+      console.log("DDG returned nothing...");
+      console.log(body.substring(0,512);
       callback({});
   });
 }
