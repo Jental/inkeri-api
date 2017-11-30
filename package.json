@@ -14,7 +14,8 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "request": "^2.83.0",
-    "unescape": "^1.0.1"
+    "unescape": "^1.0.1",
+    "unfluff": "^1.1.0"
   },
   "devDependencies": {
     "request": "^2.81.0",

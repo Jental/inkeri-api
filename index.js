@@ -2,11 +2,12 @@ const express = require('express')
 const path = require('path')
 const request = require('request');
 const unesc = require('unescape');
+const extractor = require('unfluff');
 
 const PORT = process.env.PORT || 5000
 
 let ddg_q1 = (qs, hd, dbg, callback) => {
-  let rrg = /<a class="result__snippet" .+?>(.+?)<\/a>/g;
+  let rrg = /<a class="result__snippet".*href="(.+?)".*>(.+?)<\/a>/g;
   let headers = { 'User-Agent': hd['user-agent'], 'Accept-Language': hd['accept-language'] }
   request(
     {
@@ -16,15 +17,32 @@ let ddg_q1 = (qs, hd, dbg, callback) => {
     (error, response, body) => {
       let result = {}
       let m = rrg.exec(body);
+      let loadtext = false;
       if(m) {
-        let text = m[1];
+        let href = m[1];
+        let text = m[2];
         let plaintext = unesc(text.replace(/<b>(.*?)<\/b>/g, '$1'));
         result['response'] = plaintext;
+        result['href'] = href;
+        loadtext = true;
       } 
-      if (!m || dbg) {
+      if(!m || dbg) {
         result['ddg_response'] = response;
       }
-      callback(result);
+
+      if(!result.href) {
+        callback(result);
+      } else {
+        request(result.href, (error, response, body) => {
+          if(!error) {
+            data = extractor(body);
+            result.longtext = data.text;
+          } else {
+            result['long_response'] = response;
+          }
+          callback(result);
+        });
+      }
     }
   );
 };
