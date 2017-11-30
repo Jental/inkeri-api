@@ -23,7 +23,7 @@ let ggl_q1 = (qs, hd, dbg, callback) => {
         var best_item = "";
         var best_link = "";
         for(var itm of data.items) {
-          let s = itm.snippet;
+          let s = itm.snippet.replace(/\s+/g, ' ');;
           let l = itm.link;
           if(s.length > best_item.length) {
             best_item = s;
