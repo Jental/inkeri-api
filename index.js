@@ -6,6 +6,41 @@ const extractor = require('unfluff');
 
 const PORT = process.env.PORT || 5000
 
+const google_api_key = "AIzaSyC_u405rK1uZ78xbe5mXkt3lmSnDU4WsWw";
+const google_cs_id = "002997324288046749124:oomoi-5iwda";
+
+
+let ggl_q1 = (qs, hd, dbg, callback) => {
+  let url = `https://www.googleapis.com/customsearch/v1?key=${google_api_key}&cx=${google_cs_id}&q=${encodeURIComponent(qs)}`;
+  request(url,
+    (error, response, body) => {
+      var result = {};
+      if(error || dbg) {
+        result.search_engine_response = response;
+      }
+      if(!error) {
+        data = JSON.parse(body);
+        var best_item = "";
+        var best_link = "";
+        for(var itm of data.items) {
+          let s = itm.snippet;
+          let l = itm.link;
+          if(s.length > best_item.length) {
+            best_item = s;
+            best_link = l;
+          }
+        }
+        result.href = best_link;
+        result.response = best_item;
+        result.longtext = best_item;
+      }
+      // console.log(result);
+      callback(result);
+    }
+  );
+};
+
+
 let ddg_q1 = (qs, hd, dbg, callback) => {
   let rrg = /<a class="result__snippet".*href="(.+?)".*>(.+?)<\/a>/g;
   let headers = { 'User-Agent': hd['user-agent'], 'Accept-Language': hd['accept-language'] }
@@ -27,7 +62,7 @@ let ddg_q1 = (qs, hd, dbg, callback) => {
         loadtext = true;
       } 
       if(!m || dbg) {
-        result['ddg_response'] = response;
+        result.search_engine_response = response;
       }
 
       if(!result.href) {
@@ -65,7 +100,7 @@ express()
   .get('/short-thought', (req, res) => {
     let q = req.query.q;
     let dbg = req.query.debug === '1';
-    ddg_q1(q, req.headers, dbg, (a) => {
+    ggl_q1(q, req.headers, dbg, (a) => {
       res.status(200).json(a);
     });
   })
