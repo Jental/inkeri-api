@@ -17,6 +17,9 @@ let ggl_q1 = (qs, hd, dbg, callback) => {
       var result = {};
       if(error || dbg) {
         result.search_engine_response = response;
+        try {
+          result.search_engine_response.body = JSON.parse(body);
+        } catch(e) {}
       }
       if(!error) {
         data = JSON.parse(body);
