@@ -1,5 +1,8 @@
+settings.js
+
 # Node build artifacts
 node_modules
+package-lock.json
 npm-debug.log
 
 # Local development
