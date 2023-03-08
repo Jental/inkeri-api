@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 5000
 const google_api_key = "AIzaSyC_u405rK1uZ78xbe5mXkt3lmSnDU4WsWw";
 const google_cs_id = "002997324288046749124:oomoi-5iwda";
 
-
 let ggl_q1 = (qs, hd, dbg, callback) => {
   let url = `https://www.googleapis.com/customsearch/v1?key=${google_api_key}&cx=${google_cs_id}&q=${encodeURIComponent(qs)}`;
   request(url,
