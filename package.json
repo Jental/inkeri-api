@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "express": "^4.18.1",
+    "openai": "^3.2.1",
     "unescape": "^1.0.1",
     "unfluffjs": "^3.3.4"
   },
